@@ -15,7 +15,7 @@ func Login(c *fiber.Ctx) error {
 	request := new(httpRequest.LoginRequest)
 	err := c.BodyParser(&request)
 	if err != nil {
-		return err
+		return c.Status(fiber.StatusUnprocessableEntity).JSON(err)
 	}
 
 	if err := validate.Struct(request); err != nil {
