@@ -3,6 +3,7 @@ package seed
 import (
 	"user/internal/database"
 	"user/internal/models"
+	"user/pkg/utils"
 )
 
 func AdminUserIfDoesntExist() {
@@ -12,7 +13,7 @@ func AdminUserIfDoesntExist() {
 	// Check if admin user exists
 	if err := database.DBConn.Where("email = ?", adminUserEmail).First(&existingUser).Error; err != nil {
 		// Create admin user only if it doesn't exist
-		pass, _ := models.HashPassword("Test123123")
+		pass, _ := utils.GeneratePassword("Test123123")
 
 		adminUser := models.User{
 			Name:     "John",

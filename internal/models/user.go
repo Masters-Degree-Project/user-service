@@ -1,7 +1,6 @@
 package models
 
 import (
-	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -16,9 +15,4 @@ type User struct {
 	Role        string `json:"role"`
 	Picture     string `json:"picture"`
 	CreatedById string `json:"created_by"`
-}
-
-func HashPassword(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 12)
-	return string(bytes), err
 }

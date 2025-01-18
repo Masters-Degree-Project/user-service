@@ -4,6 +4,7 @@ import (
 	httpRequest "user/internal/dto/request"
 	"user/internal/dto/response"
 	"user/internal/repositories"
+	"user/pkg/utils"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
@@ -39,10 +40,17 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
+	if !utils.ValidatePassword(user.Password, request.Password) {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+			"code":    "AUTH-T1",
+			"message": "Invalid credentials",
+		})
+	}
+
 	res, err := response.LoginResponse(*user)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"code":    "AUTH-T1",
+			"code":    "AUTH-T2",
 			"message": "Invalid credentials",
 		})
 	}
