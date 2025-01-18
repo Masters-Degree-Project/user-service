@@ -6,6 +6,7 @@ import (
 	"log"
 	"user/internal/database"
 	"user/internal/routes"
+	"user/pkg/seed"
 )
 
 func main() {
@@ -13,6 +14,9 @@ func main() {
 	myFigure.Print()
 
 	database.ConnectDb()
+
+	log.Println("Admin user checking...")
+	seed.AdminUserIfDoesntExist()
 
 	log.Println("Starting User Service")
 
