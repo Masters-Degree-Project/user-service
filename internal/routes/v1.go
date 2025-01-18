@@ -10,6 +10,6 @@ func SetupV1Routes(app *fiber.App) {
 	api := app.Group("/api/v1")
 	api.Post("/login", handlers.Login)
 
-	api.Get("/users", middleware.AccessMiddleware("admin"), handlers.UserIndex)
-	api.Get("/users/:id", middleware.AccessMiddleware("admin"), handlers.UserDetail)
+	api.Get("/users", middleware.AccessMiddleware("test"), handlers.UserIndex)
+	api.Get("/users/:id", middleware.AuthMiddleware(), handlers.UserDetail)
 }
