@@ -1,18 +1,18 @@
 FROM golang:1.21-alpine AS builder
 
-WORKDIR /app
+# Move to working directory (/build).
+WORKDIR /build
 
-# Add git and necessary build tools
-RUN apk add --no-cache git
-
-# Copy module files first
+# Copy and download dependency using go mod.
 COPY go.mod go.sum ./
-RUN go get -u
+RUN go mod download
 
+# Copy the code into the container.
 COPY . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o main ./cmd/main.go
 
-FROM alpine:latest
+# Set necessary environment variables needed for our image and build the API server.
+ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+RUN go build -ldflags="-s -w" -o apiserver .
 
 WORKDIR /app
 
