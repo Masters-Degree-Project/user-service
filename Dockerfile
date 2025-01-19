@@ -16,7 +16,7 @@ RUN go build -ldflags="-s -w" -o apiserver .
 
 WORKDIR /app
 
-COPY --from=builder /app/main .
+COPY --from=builder /build/main .
 COPY .env .
 
 EXPOSE 8080
