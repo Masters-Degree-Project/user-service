@@ -11,7 +11,7 @@ RUN go mod download
 COPY . .
 
 # Set necessary environment variables and build the API server
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o main ./cmd
+RUN GOOS=linux GOARCH=$(go env GOARCH) go build -o main ./cmd
 
 # Start a new stage from scratch
 FROM alpine:latest
@@ -23,4 +23,4 @@ COPY .env .
 
 EXPOSE 8080
 
-#CMD ["./main"] 
+CMD ["./main"] 
