@@ -11,8 +11,7 @@ RUN go mod download
 COPY . .
 
 # Set necessary environment variables needed for our image and build the API server.
-ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
-RUN go build -ldflags="-s -w" -o main .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o main .
 
 # Start a new stage from scratch
 FROM alpine:latest
