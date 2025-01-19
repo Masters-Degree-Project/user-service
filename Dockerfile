@@ -10,8 +10,8 @@ RUN go mod download
 # Copy the code into the container.
 COPY . .
 
-# Set necessary environment variables needed for our image and build the API server.
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o main .
+# Set necessary environment variables and build the API server
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -o cmd/main.go .
 
 # Start a new stage from scratch
 FROM alpine:latest
