@@ -6,15 +6,19 @@ import (
 	"user/internal/models"
 )
 
-func UserIndex(c *fiber.Ctx) error {
-	users := []models.User{}
+func Index(c *fiber.Ctx) error {
+	var users []models.User
 	database.DBConn.Find(&users)
 
 	res := c.JSON(users)
 	return res
 }
 
-func UserDetail(c *fiber.Ctx) error {
+func Store(c *fiber.Ctx) error {
+	return c.JSON(fiber.Map{})
+}
+
+func Detail(c *fiber.Ctx) error {
 	id := c.Params("id")
 	user := models.User{}
 	database.DBConn.First(&user, id)

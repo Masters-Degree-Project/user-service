@@ -3,10 +3,13 @@ package middleware
 import (
 	"encoding/base64"
 	"fmt"
+	"user/internal/database"
+	"user/internal/models"
 	"user/pkg/config"
 
 	jwtware "github.com/gofiber/contrib/jwt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 func JwtMiddleware(successHandler *fiber.Handler) fiber.Handler {
@@ -32,9 +35,32 @@ func JwtMiddleware(successHandler *fiber.Handler) fiber.Handler {
 		},
 		ErrorHandler: jwtError,
 		SuccessHandler: func(ctx *fiber.Ctx) error {
+			token := ctx.Locals("user").(*jwt.Token)
+			claims := token.Claims.(jwt.MapClaims)
+
+			userId, ok := claims["id"].(float64)
+			if !ok {
+				return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+					"status":  "error",
+					"message": "Invalid token",
+				})
+			}
+
+			var user models.User
+			result := database.DBConn.First(&user, userId)
+			if result.Error != nil {
+				return ctx.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+					"status":  "error",
+					"message": "Unauthenticated",
+				})
+			}
+
+			ctx.Locals("user", &user)
+
 			if handler != nil {
 				return handler(ctx)
 			}
+
 			return ctx.Next()
 		},
 	})
