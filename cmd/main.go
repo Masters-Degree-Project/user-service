@@ -1,11 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"github.com/common-nighthawk/go-figure"
 	"github.com/gofiber/fiber/v2"
 	"log"
 	"user/internal/database"
 	"user/internal/routes"
+	"user/pkg/config"
 	"user/pkg/seed"
 )
 
@@ -30,5 +32,5 @@ func main() {
 	})
 
 	// Start the server on port 8080
-	go log.Fatal(app.Listen(":8080"))
+	go log.Fatal(app.Listen(fmt.Sprintf(":%s", config.Config("PORT"))))
 }
