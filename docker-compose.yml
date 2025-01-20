@@ -4,7 +4,7 @@ services:
   app:
     build: .
     ports:
-      - "8080:8080"
+      - "${SERVICE_PORT}:${SERVICE_PORT}"
     depends_on:
       - db
     environment:
@@ -20,7 +20,7 @@ services:
   db:
     image: mysql:8.0
     ports:
-      - "3306:3306"
+      - "${DB_PORT}:${DB_PORT}"
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - MYSQL_DATABASE=${DB_NAME}
