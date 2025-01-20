@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"strconv"
 	"user/internal/database"
 	"user/internal/routes"
 	"user/pkg/config"
@@ -20,14 +19,8 @@ func main() {
 
 	log.Println("Starting User Service")
 
-	port := config.Config("SERVICE_PORT")
-	portInt, err := strconv.Atoi(port)
-	if err != nil {
-		log.Fatalf("Port number could not be converted to integer: %v", err)
-	}
-
 	log.Println("Consul registration...")
-	if err := consul.RegisterService(portInt); err != nil {
+	if err := consul.RegisterService(); err != nil {
 		log.Fatalf("Consul registration failed: %v", err)
 	}
 
@@ -47,5 +40,6 @@ func main() {
 	})
 
 	// Start the server on port
+	port := config.Config("SERVICE_PORT")
 	go log.Fatal(app.Listen(fmt.Sprintf(":%s", port)))
 }
