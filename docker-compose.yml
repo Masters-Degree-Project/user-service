@@ -15,7 +15,7 @@ services:
       - DB_PORT=${DB_PORT}
       - JWT_SECRET=${JWT_SECRET}
     networks:
-      - app-network
+      - traefik-network
 
   db:
     image: mysql:8.0
@@ -29,11 +29,11 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
-      - app-network
+      - traefik-network
 
 volumes:
   mysql_data:
 
 networks:
-  app-network:
-    driver: bridge 
+  traefik-network:
+    name: traefik-network
