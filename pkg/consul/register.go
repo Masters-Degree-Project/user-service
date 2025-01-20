@@ -51,6 +51,6 @@ func RegisterService() error {
 		return fmt.Errorf("service registration failed: %v", err)
 	}
 
-	log.Printf("✅ Consul service registered successfully on port %d!\n", port)
+	log.Printf("✅ Consul service registered successfully on port!")
 	return nil
 }
